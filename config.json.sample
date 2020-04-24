@@ -17,7 +17,7 @@
   },
   "pool": {
     "notify": {
-      "url": "https://explorer.conceal.network/pool/update",
+      "url": "https://stats.ultranote.org/pool/update",
       "interval": 30
     }
   }
