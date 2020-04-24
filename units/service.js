@@ -1,5 +1,5 @@
 // Copyright (c) 2019, Taegus Cromis, The Conceal Developers
-//
+// Copyright (c) 2020, The UltraNote Developers
 // Please see the included LICENSE file for more information.
 
 const xmlbuilder = require("xmlbuilder");
@@ -16,9 +16,9 @@ module.exports = {
     try {
       if (process.platform == "win32") {
         var xmlFile = xmlbuilder.create('configuration');
-        xmlFile.ele('id', 'ConcealGuardian');
-        xmlFile.ele('name', 'Conceal Guardian');
-        xmlFile.ele('description', 'Conceal Guardian for monitoring the Conceal Daemon');
+        xmlFile.ele('id', 'UltraNoteIGuardian');
+        xmlFile.ele('name', 'UltraNoteI Guardian');
+        xmlFile.ele('description', 'UltraNoteI Guardian for monitoring the UltraNoteI Daemon');
         xmlFile.ele('executable', path.join(process.cwd(), 'guardian-win64.exe'));
         xmlFile.ele('arguments', '--config ' + configFileName);
 
@@ -30,7 +30,7 @@ module.exports = {
           }
         });
       } else if (process.platform == "linux") {
-        var template = fs.readFileSync("ccx-guardian.service.template", "utf8");
+        var template = fs.readFileSync("xuni-guardian.service.template", "utf8");
         var parsedData = format(template, {
           user: username.sync(),
           workDir: process.cwd(),
@@ -38,7 +38,7 @@ module.exports = {
           configPath: configFileName
         });
 
-        fs.writeFile("/etc/systemd/system/ccx-guardian.service", parsedData, function (err) {
+        fs.writeFile("/etc/systemd/system/xuni-guardian.service", parsedData, function (err) {
           if (err) {
             console.log('\nError trying to save the service file: ' + err);
           } else {
@@ -58,7 +58,7 @@ module.exports = {
       if (process.platform == "win32") {
         shell.exec('cgservice.exe uninstall');
       } else if (process.platform == "linux") {
-        fs.unlink("/etc/systemd/system/ccx-guardian.service", function (err) {
+        fs.unlink("/etc/systemd/system/xuni-guardian.service", function (err) {
           if (err) {
             console.log('\nError trying to remove the service: ' + err);
           } else {
@@ -77,8 +77,8 @@ module.exports = {
       if (process.platform == "win32") {
         shell.exec('cgservice.exe start');
       } else if (process.platform == "linux") {
-        shell.exec('systemctl start ccx-guardian');
-        shell.exec('systemctl status ccx-guardian');
+        shell.exec('systemctl start xuni-guardian');
+        shell.exec('systemctl status xuni-guardian');
       } else {
         console.log("\nPlatform is not supported!\n");
       }
@@ -91,7 +91,7 @@ module.exports = {
       if (process.platform == "win32") {
         shell.exec('cgservice.exe stop');
       } else if (process.platform == "linux") {
-        shell.exec('systemctl stop ccx-guardian');
+        shell.exec('systemctl stop xuni-guardian');
       } else {
         console.log("\nPlatform is not supported!\n");
       }
@@ -104,7 +104,7 @@ module.exports = {
       if (process.platform == "win32") {
         shell.exec('cgservice.exe status');
       } else if (process.platform == "linux") {
-        shell.exec('systemctl status ccx-guardian');
+        shell.exec('systemctl status xuni-guardian');
       } else {
         console.log("\nPlatform is not supported!\n");
       }

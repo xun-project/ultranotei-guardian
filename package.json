@@ -1,17 +1,17 @@
 {
   "name": "nodeguard",
   "version": "0.5.2",
-  "description": "Conceal Node Guard",
+  "description": "UltraNoteI Node Guard",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ConcealNetwork/conceal-guardian.git"
+    "url": "git+https://github.com/xun-project/ultranotei-guardian.git"
   },
   "keywords": [
-    "conceal",
+    "ultranote",
     "cryptocurrency",
     "guardian",
     "daemon",
@@ -20,13 +20,13 @@
   "author": "Taegus",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ConcealNetwork/conceal-guardian/issues"
+    "url": "https://github.com/xun-project/ultranotei-guardian/issues"
   },
-  "homepage": "https://github.com/ConcealNetwork/conceal-guardian#readme",
+  "homepage": "https://github.com/xun-project/ultranotei-guardian#readme",
   "dependencies": {
     "command-line-args": "^5.1.1",
     "command-line-usage": "^5.0.5",
-    "conceal-api": "^0.7.5",
+    "ultranotei-api": "^0.7.5",
     "download-github-release": "^0.3.2",
     "express": "^4.17.1",
     "extract-zip": "^1.6.7",

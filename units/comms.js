@@ -1,15 +1,16 @@
 // Copyright (c) 2019, Taegus Cromis, The Conceal Developers
+// Copyright (c) 2020, The UltraNote Developers
 //
 // Please see the included LICENSE file for more information.
 
 const vsprintf = require("sprintf-js").vsprintf;
 const moment = require("moment");
-const CCX = require("conceal-api");
+const XUNI = require("ultranotei-api");
 
 module.exports = {
   RpcCommunicator: function (configOpts, errorCallback) {
-    // create the CCX api interface object
-    var CCXApi = new CCX("http://127.0.0.1", "3333", configOpts.node.port, (configOpts.node.rfcTimeout || 5) * 1000);
+    // create the XUNI api interface object
+    var CCXApi = new XUNI("http://127.0.0.1", "3333", configOpts.node.port, (configOpts.node.rfcTimeout || 5) * 1000);
     var timeoutCount = 0;
     var IsRunning = false;
     var lastHeight = 0;

@@ -1,4 +1,5 @@
 // Copyright (c) 2019, Taegus Cromis, The Conceal Developers
+// Copyright (c) 2020, The UltraNote Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -14,8 +15,8 @@ const path = require("path");
 const fs = require("fs");
 
 // a message if you are on the wrong OS and there is no precompiled binaries for that OS.
-const wrongLinuxOSMsg = "Only Ubuntu 16.04 and 18.04 have precompiled binaries, on other linux systems you need to build the daemon yourself. Reffer to: https://github.com/ConcealNetwork/conceal-core";
-const wrongOSMsg = "This operating system has no precompiled binaries you need to build the daemon yourself. Reffer to: https://github.com/ConcealNetwork/conceal-core";
+const wrongLinuxOSMsg = "Only Ubuntu 16.04 and 18.04 have precompiled binaries, on other linux systems you need to build the daemon yourself. Reffer to: https://github.com/xun-project/ultranotei-core";
+const wrongOSMsg = "This operating system has no precompiled binaries you need to build the daemon yourself. Reffer to: https://github.com/xun-project/ultranotei-core";
 
 // Define a function to filter releases.
 function filterRelease(release) {
@@ -99,7 +100,7 @@ module.exports = {
       }
     };
 
-    downloadRelease('ConcealNetwork', 'conceal-core', finalTempDir, filterRelease, filterAssetNode, true)
+    downloadRelease('xun-project', 'ultranotei-core', finalTempDir, filterRelease, filterAssetNode, true)
       .then(function () {
         fs.readdir(finalTempDir, function (err, items) {
           if (items.length > 0) {
@@ -158,7 +159,7 @@ module.exports = {
       }
     };
 
-    downloadRelease('ConcealNetwork', 'conceal-guardian', finalTempDir, filterRelease, filterAssetGuardian, true)
+    downloadRelease('xun-project', 'ultranotei-guardian', finalTempDir, filterRelease, filterAssetGuardian, true)
       .then(function () {
         fs.readdir(finalTempDir, function (err, items) {
           if (items.length > 0) {

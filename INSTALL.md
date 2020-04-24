@@ -1,4 +1,4 @@
-# Conceal Node Guardian Installation Instructions
+# UltraNoteI Node Guardian Installation Instructions
 
 Please take note that you will need **administrative rights** for working with service commands. On Linux and macOS ensure that you have superuser privileges. On Windows, be sure you are using "Run as administrator" option.
 
@@ -14,9 +14,9 @@ Please take note that you will need **administrative rights** for working with s
 
 ## Getting the Executables
 
-Download the appropriate binary for your OS [here](https://github.com/ConcealNetwork/conceal-guardian/releases) and extract them to the directory of your choice.
+Download the appropriate binary for your OS [here](https://github.com/xun-project/ultranotei-guardian/releases) and extract them to the directory of your choice.
 
-If running on Linux or macOS, before running `conceald`, Boost v1.58 must be installed. In case your package manager installs different Boost version (as it is with Ubuntu 18.10 or higher), `conceald` executable will have to be built manually as described [here](https://github.com/ConcealNetwork/conceal-core#compiling-conceal-from-source). You can check installed Boost version by running `dpkg -s libboost-dev | grep 'Version'` on Linux or `brew info boost` on macOS if you installed it with Homebrew.
+If running on Linux or macOS, before running `ultranoteid`, Boost v1.58 must be installed. In case your package manager installs different Boost version (as it is with Ubuntu 18.10 or higher), `ultranoteid` executable will have to be built manually as described [here](https://github.com/ConcealNetwork/conceal-core#compiling-conceal-from-source). You can check installed Boost version by running `dpkg -s libboost-dev | grep 'Version'` on Linux or `brew info boost` on macOS if you installed it with Homebrew.
 
 ### Linux Dependencies
 
@@ -49,7 +49,7 @@ Each OS has the executable of a different name so be sure to use the appropriate
 
 You will be presented with few questions, answer them and you will be ready to go.
 
-![Guardian setup](https://raw.githubusercontent.com/ConcealNetwork/conceal-guardian/master/setup/guardian_setup.jpg)
+![Guardian setup](https://raw.githubusercontent.com/xun-project/ultranotei-guardian/master/setup/guardian_setup.jpg)
 
 **Questions explanations:**
 

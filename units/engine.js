@@ -1,4 +1,5 @@
 // Copyright (c) 2019, Taegus Cromis, The Conceal Developers
+// Copyright (c) 2020, The UltraNote Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -303,8 +304,8 @@ exports.NodeGuard = function (cmdOptions, configOpts, rootPath, guardVersion) {
         // check node
         if (nodeData) {
           request.get({
-            url: 'https://api.github.com/repos/ConcealNetwork/conceal-core/releases/latest',
-            headers: { 'User-Agent': 'Conceal Node Guardian' },
+            url: 'https://api.github.com/repos/xun-project/ultranotei-core/releases/latest',
+            headers: { 'User-Agent': 'UltraNotei Node Guardian' },
             json: true
           }, (err, res, release) => {
             if (!err && release) {

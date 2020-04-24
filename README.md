@@ -1,8 +1,8 @@
-# Conceal Node Guardian
+# UltraNoteI Node Guardian
 
 ## About
 
-Conceal Node Guardian is a process that monitors the `conceald` daemon. It is catching daemon errors, monitors the block count and, in case of an error, it restarts the daemon and notifies on Discord via web hook, sends an e-mail, or both.
+UltraNoteI Node Guardian is a process that monitors the `ultranoteid` daemon. It is catching daemon errors, monitors the block count and, in case of an error, it restarts the daemon and notifies on Discord via web hook, sends an e-mail, or both.
 
 It also has an ability to connect to a pool with other nodes for the purpose of infrastructure monitoring or running a remote node with fee listing.
 
@@ -21,7 +21,7 @@ It also has an ability to connect to a pool with other nodes for the purpose of 
 
 ## Installation
 
-Conceal Node Guardian can be installed to run with Node.js or used as precompiled binary.
+UltraNoteI Node Guardian can be installed to run with Node.js or used as precompiled binary.
 
 ### Node.js
 
@@ -35,8 +35,8 @@ Or use [nvm](https://github.com/creationix/nvm) (Node Version Manager) to manage
 Clone or download this repository and install project dependencies:
 
 ```bash
-$ git clone https://github.com/ConcealNetwork/conceal-guardian.git
-$ cd conceal-guardian
+$ git clone https://github.com/xun-project/ultranotei-guardian.git
+$ cd ultranotei-guardian
 $ npm install
 ```
 
@@ -59,11 +59,11 @@ You can use [sample configuration](config.json.sample) and modify it for your ne
          "--rpc-bind-port",
          "16000"
       ],
-      "path":"C:\\Wallets\\Conceal-CLI\\conceald.exe",
-      "port":16000,
+      "path":"C:\\Wallets\\UltraNoteI-CLI\\ultranoteid.exe",
+      "port":43000,
       "name":"TestNode",
       "bindAddr":"0.0.0.0",
-      "feeAddr":"your fee CCX address"
+      "feeAddr":"your fee XUNI address"
    },
    "error":{
       "notify":{
@@ -72,7 +72,7 @@ You can use [sample configuration](config.json.sample) and modify it for your ne
          },
          "email":{
             "smtp":{
-               "host":"conceal.network",
+               "host":"ultranote.org",
                "port":25,
                "secure":false
             },
@@ -81,7 +81,7 @@ You can use [sample configuration](config.json.sample) and modify it for your ne
                "password":"your SMTP password"
             },
             "message":{
-               "from":"no-reply@conceal.network",
+               "from":"no-reply@ultranote.org",
                "to":"test.email@gmail.com",
                "subject":"Guardian error occured"
             }
@@ -117,7 +117,7 @@ You can use [sample configuration](config.json.sample) and modify it for your ne
   * path: The path of the process. If omited it uses the same path where the guardian is located
   * port: The port on which conceald is running
   * name: Name of the node. If omited it uses the hostname.
-  * feeAddr: The CCX address on which the transaction fee will be sent in case of remote node.
+  * feeAddr: The XUNI address on which the transaction fee will be sent in case of remote node.
   * bindAddr: The address on which you listen. 127.0.0.1 for localhost only. 0.0.0.0 for outside accesible node.
 * **error**
   * **notify**
@@ -144,7 +144,7 @@ You can use [sample configuration](config.json.sample) and modify it for your ne
   * port: port of the api on which to listen. If not specified the guardian will not listen for incoming requests
 * **pool**
   * **notify**
-    * url: the url of the Conceal Guardian Pool. The Guardian is sending its data to pool for public listing
+    * url: the url of the UltraNoteI Guardian Pool. The Guardian is sending its data to pool for public listing
     * interval: the interval in seconds in which the data is being sent
 * **url**
   * host: if you want to have a custom hostname, specify it here and it will override the automatically assigned one
@@ -159,11 +159,11 @@ Depending on how Guardian is installed, there are 2 ways to run it, with Node.js
 Navigate to project's folder and run `index.js` file:
 
 ```bash
-$ cd conceal-guardian
+$ cd ultranotei-guardian
 $ node index.js
 ```
   
-To run as a service you can use the build in service controls described on [installation page](https://github.com/ConcealNetwork/conceal-guardian/blob/master/SETUP.md). Or you can do it the manual way. On linux you can use **systemctl**
+To run as a service you can use the build in service controls described on [installation page](https://github.com/xun-project/ultranotei-guardian/blob/master/SETUP.md). Or you can do it the manual way. On linux you can use **systemctl**
 =======
 
 ### Running as a System Service
@@ -189,29 +189,29 @@ RestartSec=3
 WantedBy=multi-user.target
 ```
 
-Edit the file accordingly and save it as `/etc/systemd/system/ccx-guardian.service`.
+Edit the file accordingly and save it as `/etc/systemd/system/xuni-guardian.service`.
 
 To enable the service and run it on startup, run:
 
 ```bash
 $ sudo systemctl daemon-reload
-$ sudo systemctl enable ccx-guardian.service
+$ sudo systemctl enable xuni-guardian.service
 ```
 
 You can control system service with following commands:
 
 ```bash
 # start
-$ sudo systemctl start ccx-guardian
+$ sudo systemctl start xuni-guardian
 
 # stop
-$ sudo systemctl stop ccx-guardian
+$ sudo systemctl stop xuni-guardian
 
 # status
-$ sudo systemctl status ccx-guardian
+$ sudo systemctl status xuni-guardian
 
 # print log
-$ journalctl -e -u ccx-guardian.service
+$ journalctl -e -u xuni-guardian.service
 
 # reload configuration
 $ sudo systemctl daemon-reload
@@ -228,7 +228,7 @@ On macOS, use `launchd` to configure service. Use following configuration:
   <dict>
 
     <key>Label</key>
-    <string>conceal.guardian</string>
+    <string>ultranotei.guardian</string>
 
     <key>RunAtLoad</key>
     <true/>
@@ -243,18 +243,18 @@ On macOS, use `launchd` to configure service. Use following configuration:
 </plist>
 ```
 
-Edit the file accordingly and save it as `~/Library/LaunchAgents/conceal.guardian.plist`.
+Edit the file accordingly and save it as `~/Library/LaunchAgents/ultranotei.guardian.plist`.
 
 Start it with:
 
 ```bash
-launchctl load ~/Library/LaunchAgents/conceal.guardian.plist
+launchctl load ~/Library/LaunchAgents/ultranotei.guardian.plist
 ```
 
 If you want to unload it, run:
 
 ```bash
-launchctl unload ~/Library/LaunchAgents/conceal.guardian.plist
+launchctl unload ~/Library/LaunchAgents/ultranotei.guardian.plist
 ```
 
 ### Precompiled binaries
