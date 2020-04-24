@@ -40,9 +40,9 @@ module.exports = {
   },
   getNodeExecutableName: function () {
     if (process.platform === "win32") {
-      return 'conceald.exe';
+      return 'ultranoteid.exe';
     } else {
-      return 'conceald';
+      return 'ultranoteid';
     }
   },
   getGuardianExecutableName: function () {

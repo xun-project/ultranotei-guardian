@@ -115,7 +115,7 @@ You can use [sample configuration](config.json.sample) and modify it for your ne
 * **node**
   * args: The arguments that get appended to the monitored process.
   * path: The path of the process. If omited it uses the same path where the guardian is located
-  * port: The port on which conceald is running
+  * port: The port on which ultranoteid is running
   * name: Name of the node. If omited it uses the hostname.
   * feeAddr: The XUNI address on which the transaction fee will be sent in case of remote node.
   * bindAddr: The address on which you listen. 127.0.0.1 for localhost only. 0.0.0.0 for outside accesible node.
