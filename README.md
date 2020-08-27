@@ -161,9 +161,6 @@ $ cd ultranotei-guardian
 $ node index.js
 ```
   
-To run as a service you can use the build in service controls described on [installation page](https://github.com/xun-project/ultranotei-guardian/blob/master/SETUP.md). Or you can do it the manual way. On linux you can use **systemctl**
-=======
-
 ### Running as a System Service
 
 #### Linux
