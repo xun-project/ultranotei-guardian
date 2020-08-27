@@ -46,7 +46,6 @@ Please refer to [installation page](INSTALL.md) for detailed instructions how to
 
 ## Configuration
 
-The Guardian can be configured manually by creating `config.json` file in the project's root directory or by using interactive setup (refer to [installation page](INSTALL.md) for instructions how to run interactive setup).
 
 You can use [sample configuration](config.json.sample) and modify it for your needs.
 
