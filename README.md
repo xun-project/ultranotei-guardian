@@ -279,9 +279,6 @@ If you want to unload it, run:
 launchctl unload ~/Library/LaunchAgents/ultranotei.guardian.plist
 ```
 
-### Precompiled binaries
-
-Please refer to [installation page](INSTALL.md) for detailed instructions how to run the Guardian with precompiled binaries.
 
 ## API
 
@@ -313,7 +310,7 @@ Sample response:
       "block_major_version":7,
       "block_minor_version":0,
       "difficulty":411075551,
-      "fee_address":"ccx7ZuCP9NA2KmnxbyBn9QgeLSATHXHRAXVpxgiaNxsH4GwMvQ92SeYhEeF2tJHADHbW4bZMFHvFf8GpucLrRyw49q4Gkc3AXM",
+      "fee_address":"XuniiZuCP9NA2KmnxbyBn9QgeLSATHXHRAXVpxgiaNxsH4GwMvQ92SeYhEeF2tJHADHbW4bZMFHvFf8GpucLrRyw49q4Gkc3AXM",
       "full_deposit_amount":10158060988835,
       "full_deposit_interest":54938177048,
       "grey_peerlist_size":1120,
