@@ -1,24 +1,57 @@
 {
-  "node": {
-    "args": [],
-    "port": 16000,
-    "rfcTimeout": 10,
-    "bindAddr": "0.0.0.0"
-  },
-  "restart": {
-    "terminateTimeout": 5,
-    "errorForgetTime": 600,
-    "maxCloseErrors": 3,
-    "maxBlockTime": 1800,
-    "maxInitTime": 900
-  },
-  "api": {
-    "port": 8080
-  },
-  "pool": {
-    "notify": {
-      "url": "https://stats.ultranote.org/pool/update",
-      "interval": 30
-    }
-  }
+   "node":{
+      "args":[
+         "--rpc-bind-ip",
+         "127.0.0.1",
+         "--rpc-bind-port",
+         "43000"
+      ],
+      "path":"/etc/XUNI/ultranoteid",
+      "port":43000,
+      "name":"Infinity Node",
+      "bindAddr":"0.0.0.0",
+      "feeAddr":""
+   },
+   "error":{
+      "notify":{
+         "discord":{
+            "url":""
+         },
+         "email":{
+            "smtp":{
+               "host":"ultranote.org",
+               "port":25,
+               "secure":false
+            },
+            "auth":{
+               "username":"your SMTP username",
+               "password":"your SMTP password"
+            },
+            "message":{
+               "from":"no-reply@ultranote.org",
+               "to":"test.email@gmail.com",
+               "subject":"Guardian error occured"
+            }
+         }
+      }
+   },
+   "restart":{
+      "errorForgetTime":600,
+      "maxCloseErrors":3,
+      "maxBlockTime":1800,
+      "maxInitTime":600
+   },
+   "api":{
+      "port":8080
+ },
+   "pool":{
+      "notify":{
+         "url":"https://stats.ultranote.org/api/pool/update",
+         "interval":30
+      }
+   },
+   "url": {
+      "host": "Infinity.ultranote.org",
+      "port":43000
+   }
 }
