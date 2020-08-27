@@ -40,9 +40,6 @@ $ cd ultranotei-guardian
 $ npm install
 ```
 
-### Precompiled binaries
-
-Please refer to [installation page](INSTALL.md) for detailed instructions how to install the Guardian with precompiled binaries.
 
 ## Configuration
 
