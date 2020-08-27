@@ -17,6 +17,7 @@ const moment = require("moment");
 const comms = require("./comms.js");
 const pjson = require('../package.json');
 const utils = require("./utils.js");
+const execa = require('execa');
 const path = require("path");
 const fs = require("fs");
 const os = require("os");
@@ -24,17 +25,17 @@ const os = require("os");
 exports.NodeGuard = function (cmdOptions, configOpts, rootPath, guardVersion) {
   const nodeUniqueId = utils.ensureNodeUniqueId();
   var poolNotifyInterval = null;
-  var starupTime = moment();
+  var startupTime = moment();
   var errorCount = 0;
   var isStoping = false;
+  var initInterval = null;
   var poolInterval = null;
   var locationData = null;
   var autoRestart = true;
   var initialized = false;
   var killTimeout = null;
   var nodeProcess = null;
-  var errorStream = null;
-  var dataStream = null;
+ 
   var externalIP = null;
   var rpcComms = null;
   var self = this;
@@ -51,17 +52,11 @@ exports.NodeGuard = function (cmdOptions, configOpts, rootPath, guardVersion) {
   })();
 
   this.stop = function (doAutoRestart) {
+	    logMessage("Stopping the daemon process", "info", false);
     autoRestart = (doAutoRestart != null) ? doAutoRestart : true;
-    clearInterval(poolNotifyInterval);
+	      clearInterval(poolNotifyInterval);
 
-    if (errorStream) {
-      errorStream.close();
-      errorStream = null;
-    }
-    if (dataStream) {
-      dataStream.close();
-      dataStream = null;
-    }
+    
 
     if (rpcComms) {
       rpcComms.stop();
@@ -77,15 +72,10 @@ exports.NodeGuard = function (cmdOptions, configOpts, rootPath, guardVersion) {
         logMessage("Sending SIGTERM to daemon process", "info", false);
 
         isStoping = true;
-        nodeProcess.kill("SIGTERM");
+        nodeProcess.kill('SIGTERM', {
+          forceKillAfterTimeout: (configOpts.restart.terminateTimeout || 5) * 1000
+        });
 
-        // if normal fails, do a forced terminate
-        killTimeout = setTimeout(function () {
-          if (isStoping) {
-            logMessage("Sending SIGKILL to daemon process", "error", false);
-            nodeProcess.kill("SIGKILL");
-          }
-        }, (configOpts.restart.terminateTimeout || 5) * 1000);
       }
     }
   };
@@ -112,7 +102,7 @@ exports.NodeGuard = function (cmdOptions, configOpts, rootPath, guardVersion) {
       url: configOpts.url,
       status: {
         errors: errorCount,
-        startTime: starupTime,
+        startTime: startupTime,
         initialized: initialized
       },
       blockchain: rpcComms ? rpcComms.getData() : null,
@@ -149,22 +139,11 @@ exports.NodeGuard = function (cmdOptions, configOpts, rootPath, guardVersion) {
   //*************************************************************//
   function restartDaemonProcess(errorData, sendNotification) {
     logMessage(errorData, "error", sendNotification);
+	clearInterval(initInterval);
     self.stop();
   }
 
-  function checkIfInitialized() {
-    if (!initialized) {
-      var duration = moment.duration(moment().diff(starupTime));
 
-      if (duration.asSeconds() > (configOpts.restart.maxInitTime || 900)) {
-        restartDaemonProcess("Initialization is taking to long, restarting", true);
-      } else {
-        setTimeout(() => {
-          checkIfInitialized();
-        }, 5000);
-      }
-    }
-  }
 
   function setNotifyPoolInterval() {
     if (configOpts.pool && configOpts.pool.notify && configOpts.pool.notify.url) {
@@ -194,24 +173,32 @@ exports.NodeGuard = function (cmdOptions, configOpts, rootPath, guardVersion) {
   }
 
   //*************************************************************//
-  //         processes a single line from data or error stream
+  //         periodically check if the core has initialized
   //*************************************************************//
-  function processSingleLine(line) {
-    // core is initialized, we can start the queries
-    if (line.indexOf("Core initialized OK") > -1) {
-      logMessage("Core is initialized, starting the periodic checking...", "info", false);
-      initialized = true;
-
-      if (!rpcComms) {
-        rpcComms = new comms.RpcCommunicator(configOpts, errorCallback);
+  function waitForCoreToInitialize() {
+    if (!initialized) {
+      var duration = moment.duration(moment().diff(startupTime));
+      if (duration.asSeconds() > (configOpts.restart.maxInitTime || 900)) {
+        restartDaemonProcess("Initialization is taking to long, restarting", true);
+      } else {
+        request.get({
+          url: `http://127.0.0.1:${configOpts.node.port}/getinfo`,
+          headers: { 'User-Agent': 'UltraNoteI Node Guardian' },
+          timeout: 5000,
+          json: true
+        }, (err, res, release) => {
+          if ((!err) && (res.body.status === "OK")) {
+            logMessage("Core is initialized, starting the periodic checking...", "info", false);
+            clearInterval(initInterval);
+            initialized = true;
+            if (!rpcComms) {
+              rpcComms = new comms.RpcCommunicator(configOpts, errorCallback);
+            }
+            // start comms
+            rpcComms.start();
+          }
+        });
       }
-
-      // close streams and start comms
-      errorStream.close();
-      dataStream.close();
-      errorStream = null;
-      dataStream = null;
-      rpcComms.start();
     }
   }
 
@@ -219,8 +206,9 @@ exports.NodeGuard = function (cmdOptions, configOpts, rootPath, guardVersion) {
   //         start the daemon process and then monitor it
   //*************************************************************//
   function startDaemonProcess() {
-    nodeProcess = child_process.spawn(utils.getNodeActualPath(cmdOptions, configOpts, rootPath), configOpts.node.args || []);
+    nodeProcess = execa(utils.getNodeActualPath(cmdOptions, configOpts, rootPath), configOpts.node.args || []);
     logMessage("Started the daemon process", "info", false);
+	startupTime = moment();
     autoRestart = true;
     isStoping = false;
 
@@ -230,21 +218,7 @@ exports.NodeGuard = function (cmdOptions, configOpts, rootPath, guardVersion) {
         process.exit(0);
       }, 3000);
     } else {
-      dataStream = readline.createInterface({
-        input: nodeProcess.stdout
-      });
-
-      errorStream = readline.createInterface({
-        input: nodeProcess.stderr
-      });
-
-      dataStream.on("line", line => {
-        processSingleLine(line);
-      });
-
-      errorStream.on("line", line => {
-        processSingleLine(line);
-      });
+      
 
       nodeProcess.on("error", function (err) {
         restartDaemonProcess(vsprintf("Error on starting the node process: %s", [err]), false);
@@ -291,7 +265,9 @@ exports.NodeGuard = function (cmdOptions, configOpts, rootPath, guardVersion) {
       // start notifying the pool
       setNotifyPoolInterval();
       // start the initilize checking
-      checkIfInitialized();
+      initInterval = setInterval(function () {
+        waitForCoreToInitialize();
+      }, 10000);
     }
   }
 
@@ -299,7 +275,7 @@ exports.NodeGuard = function (cmdOptions, configOpts, rootPath, guardVersion) {
   if (configOpts.node && configOpts.node.autoUpdate) {
     setInterval(function () {
       if (rpcComms && initialized) {
-        nodeData = rpcComms.getData();
+        var nodeData = rpcComms.getData();
 
         // check node
         if (nodeData) {
@@ -341,6 +317,7 @@ exports.NodeGuard = function (cmdOptions, configOpts, rootPath, guardVersion) {
   // for servicing API calls for the current node
   if (configOpts.api && configOpts.api.port) {
     logMessage("Starting the API server", "info", false);
+	var 
     nodeDirectory = path.dirname(utils.getNodeActualPath(cmdOptions, configOpts, rootPath));
     apiServer.createServer(configOpts, nodeDirectory, function () {
       return getNodeInfoData();

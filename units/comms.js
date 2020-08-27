@@ -10,7 +10,8 @@ const XUNI = require("ultranotei-api");
 module.exports = {
   RpcCommunicator: function (configOpts, errorCallback) {
     // create the XUNI api interface object
-    var CCXApi = new XUNI("http://127.0.0.1", "3333", configOpts.node.port, (configOpts.node.rfcTimeout || 5) * 1000);
+    var XUNIApi = new XUNI("http://127.0.0.1", "3333", configOpts.node.port, (configOpts.node.rfcTimeout || 5) * 1000);
+	var checkInterval = null;
     var timeoutCount = 0;
     var IsRunning = false;
     var lastHeight = 0;
@@ -18,6 +19,7 @@ module.exports = {
     var lastTS = moment();
 
     this.stop = function () {
+      clearInterval(checkInterval);
       IsRunning = false;
     };
 
@@ -29,12 +31,15 @@ module.exports = {
       IsRunning = true;
       timeoutCount = 0;
       lastTS = moment();
-      checkAliveAndWell();
+      // set the periodic checking interval
+      checkInterval = setInterval(function () {
+        checkAliveAndWell();
+      }, 30000);
     };
 
     function checkAliveAndWell() {
       if (IsRunning) {
-        CCXApi.info().then(data => {
+        XUNIApi.info().then(data => {
           var heightIsOK = true;
           infoData = data;
 
@@ -55,11 +60,9 @@ module.exports = {
             if (data.status !== "OK") {
               errorCallback("Status is: " + data.status);
             } else {
-              // reset count and repeat
+              // reset counter
               timeoutCount = 0;
-              setTimeout(() => {
-                checkAliveAndWell();
-              }, 5000);
+              
             }
           }
         }).catch(err => {
