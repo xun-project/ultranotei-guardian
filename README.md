@@ -57,18 +57,18 @@ You can use [sample configuration](config.json.sample) and modify it for your ne
          "--rpc-bind-ip",
          "127.0.0.1",
          "--rpc-bind-port",
-         "16000"
+         "43000"
       ],
-      "path":"C:\\Wallets\\UltraNoteI-CLI\\ultranoteid.exe",
+      "path":"/etc/XUNI/ultranoteid",
       "port":43000,
-      "name":"TestNode",
+      "name":"Infinity Node",
       "bindAddr":"0.0.0.0",
-      "feeAddr":"your fee XUNI address"
+      "feeAddr":""
    },
    "error":{
       "notify":{
          "discord":{
-            "url":"put the discord web hook url in here"
+            "url":""
          },
          "email":{
             "smtp":{
@@ -96,18 +96,20 @@ You can use [sample configuration](config.json.sample) and modify it for your ne
    },
    "api":{
       "port":8080
-   },
+ },
    "pool":{
       "notify":{
-         "url":"URL to the guardian pool service if you want to register there",
+         "url":"https://stats.ultranote.org/api/pool/update",
          "interval":30
       }
    },
    "url": {
-      "host": your custom hostname (usually an URL)
-      "port": your custom port
+      "host": "Infinity.ultranote.org",
+      "port":43000
    }
 }
+
+
 ```
 
 **Description of configuration options:**
@@ -216,7 +218,31 @@ $ journalctl -e -u xuni-guardian.service
 # reload configuration
 $ sudo systemctl daemon-reload
 ```
+#### 2nd Option using PM2
 
+```
+# Install PM2 package 
+  sudo npm install -g pm2
+ 
+# Move guardian to /etc folder
+  sudo mv ultranotei-guardian /etc/guardian
+  chown -R user:user /etc/guardian 
+  
+# cd to guardian folder
+  cd to guardian folder cd /etc
+  
+# Start PM2
+  pm2 start ./index.js --name=node
+
+# Check guardian status and logs
+  pm2 logs
+  pm2 status
+  
+# Stop and Restrt
+  pm2 stop node
+  pm2 restart node
+
+```
 #### macOS
 
 On macOS, use `launchd` to configure service. Use following configuration:
@@ -281,7 +307,7 @@ Sample response:
    "os":"linux",
    "name":"Solaris",
    "nodeHost":"80.241.210.162",
-   "nodePort":16000,
+   "nodePort":43000,
    "status":{
       "errors":0,
       "startTime":"2019-04-08T15:32:03.011Z"
