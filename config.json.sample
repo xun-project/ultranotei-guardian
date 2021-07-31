@@ -2,13 +2,13 @@
    "node":{
       "args":[
          "--rpc-bind-ip",
-         "127.0.0.1",
+         "0.0.0.0",
          "--rpc-bind-port",
          "43000"
       ],
       "path":"/etc/XUNI/ultranoteid",
       "port":43000,
-      "name":"Infinity Node",
+      "name":"Seed2",
       "bindAddr":"0.0.0.0",
       "feeAddr":""
    },
@@ -43,15 +43,16 @@
    },
    "api":{
       "port":8080
- },
-   "pool":{
+   },
+ "pool":{
       "notify":{
-         "url":"https://stats.ultranote.org/api/pool/update",
+         "url":"https://explorer.ultranote.org/api/pool/update",
          "interval":30
       }
    },
    "url": {
-      "host": "Infinity.ultranote.org",
+      "host": "seed2.ultranote.org",
       "port":43000
    }
 }
+
