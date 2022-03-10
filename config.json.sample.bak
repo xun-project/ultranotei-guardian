@@ -1,16 +1,14 @@
 {
    "node":{
       "args":[
-	"--enable-blockexplorer",
          "--rpc-bind-ip",
          "0.0.0.0",
-	"--rpc-bind-port",
-	"--enable-cors=*",
+         "--rpc-bind-port",
          "43000"
       ],
-      "path":"/Location/to/ultranoteid",
+      "path":"/etc/XUNI/ultranoteid",
       "port":43000,
-      "name":"NY Node",
+      "name":"Seed2",
       "bindAddr":"0.0.0.0",
       "feeAddr":""
    },
@@ -46,14 +44,14 @@
    "api":{
       "port":8080
    },
-   "pool":{
+ "pool":{
       "notify":{
-         "url":"https://explorer.ultranote.org/pool/update",
+         "url":"https://explorer.ultranote.org/api/pool/update",
          "interval":30
       }
    },
    "url": {
-      "host": "seed1.ultranote.org",
+      "host": "seed2.ultranote.org",
       "port":43000
    }
 }
